@@ -60,12 +60,3 @@ data class Issue(
     var labels: List<String>? = null
 )
 
-fun main() {
-    val github = Feign.builder()
-            .decoder(JacksonDecoder())
-            .target(GitHub::class.java, "https://api.github.com")
-
-    github.contributors("OpenFeign", "feign")
-            .forEach { contributor -> println(contributor.login + " (" + contributor.contributions + ")") }
-
-}

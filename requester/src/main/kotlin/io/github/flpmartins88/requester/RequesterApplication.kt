@@ -1,5 +1,7 @@
 package io.github.flpmartins88.requester
 
+import feign.Feign
+import feign.jackson.JacksonDecoder
 import org.springframework.boot.ApplicationArguments
 import org.springframework.boot.ApplicationRunner
 import org.springframework.boot.autoconfigure.SpringBootApplication
@@ -22,8 +24,9 @@ class RequesterApplication(
     override fun run(args: ApplicationArguments?) {
         when (args!!.nonOptionArgs[0].toOperation()) {
             Operation.CREATE -> createBook(args.getOptionValues("name")[0])
-            Operation.LIST -> listBooks()
-            Operation.GET -> getBook(args.nonOptionArgs[1].toLong())
+            Operation.LIST ->   listBooks()
+            Operation.GET ->    getBook(args.nonOptionArgs[1].toLong())
+            Operation.GITHUB -> github()
         }
 
 //        println("-> Non Options")
@@ -54,6 +57,17 @@ class RequesterApplication(
         }
     }
 
+    private fun github() {
+
+        val github = Feign.builder()
+                .decoder(JacksonDecoder())
+                .target(GitHub::class.java, "https://api.github.com")
+
+        github.contributors("OpenFeign", "feign")
+                .forEach { contributor -> println(contributor.login + " (" + contributor.contributions + ")") }
+
+    }
+
 }
 
 @FeignClient(name = "bookClient", url="http://localhost:8080/books")
@@ -75,7 +89,7 @@ data class BookRequest(val name: String)
 data class BookResponse @ConstructorProperties("id", "name") constructor(val id: Long, val name: String)
 
 enum class Operation {
-    CREATE, LIST, GET
+    CREATE, LIST, GET, GITHUB
 }
 
 private fun String.toOperation() =
