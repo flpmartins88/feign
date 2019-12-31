@@ -1,9 +1,7 @@
-package io.github.flpmartins88.requester
+package io.github.flpmartins88.requester.client
 
-import feign.Feign
 import feign.Param
 import feign.RequestLine
-import feign.jackson.JacksonDecoder
 
 /*
  * Site: https://github.com/OpenFeign/feign
