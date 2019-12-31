@@ -17,6 +17,7 @@ O campo **command** pode ser:
  - **create**: cria um livro
  - **list**: lista todos os livros cadastrados
  - **get**: recupera algum livro pelo ID
+ - **github**: executa o exemplo da documentação do Feign (essa opção vai por fora do spring)
 
 ## Exemplos de uso:
 
